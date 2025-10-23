@@ -1,0 +1,11 @@
+.env
+.DS_Store
+
+data/**/*.txt
+data/**/*.xlsx
+data/**/*.json
+data/**/*.png
+
+__pycache__
+
+whatsappMessaging/node_modules
