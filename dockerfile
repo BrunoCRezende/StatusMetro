@@ -18,4 +18,6 @@ RUN python -m playwright install
 WORKDIR /baseapp/whatsappMessaging
 RUN npm install
 
+WORKDIR /baseapp
+
 CMD ["python", "-m", "app.main"]
