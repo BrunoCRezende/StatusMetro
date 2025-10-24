@@ -15,10 +15,6 @@ client.on('ready', async () => {
   const numero = '5511940005063@c.us'; // @c.us pra contato pessoal g.us pra grupo
   const mensagem = '🖕';
 
-  for(let i = 0; i<10; i++){
-  await client.sendMessage(numero, mensagem);
-  }
-
   console.log(`📤 Mensagem enviada para ${numero}`);
 });
 

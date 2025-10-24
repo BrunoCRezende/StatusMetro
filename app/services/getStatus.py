@@ -16,8 +16,7 @@ def getInfo(context):
             item = linhas.nth(i)
             linhasMetro.append(item.inner_text() + "\n")
 
-        for item in linhasMetro:
-            print(item)
+        return linhasMetro
 
     def getRecentNews(context):
         page = context.new_page()
@@ -31,9 +30,9 @@ def getInfo(context):
             item = noticia.nth(i)
             noticias.append(item.inner_text() + '\n')
 
-        for item in noticias:
-            print(item)
+        return noticias
 
+    StatusOficial = getOfficialLineStatus(context)
+    Noticias = getRecentNews(context)
 
-    getOfficialLineStatus(context)
-    getRecentNews(context)
+    return StatusOficial, Noticias
