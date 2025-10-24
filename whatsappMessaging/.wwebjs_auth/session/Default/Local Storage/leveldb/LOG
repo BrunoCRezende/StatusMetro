@@ -1,6 +1,0 @@
-2025/10/22-11:04:10.267 a503 Reusing MANIFEST /Users/brunocostarezende/Documents/testeWhatsapp/.wwebjs_auth/session/Default/Local Storage/leveldb/MANIFEST-000001
-2025/10/22-11:04:10.267 a503 Recovering log #4
-2025/10/22-11:04:10.267 a503 Reusing old log /Users/brunocostarezende/Documents/testeWhatsapp/.wwebjs_auth/session/Default/Local Storage/leveldb/000004.log 
-2025/10/22-12:05:17.093 f41f Level-0 table #8: started
-2025/10/22-12:05:17.106 f41f Level-0 table #8: 13346 bytes OK
-2025/10/22-12:05:17.121 f41f Delete type=0 #4
