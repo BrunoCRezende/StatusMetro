@@ -1,6 +1,7 @@
 from playwright.sync_api import sync_playwright
 from app.services.getStatus import getInfo
 from app.services.aiRequest import googleIA
+from app.services.runWhatsapp import runWhatsapp
 
 
 def main():
@@ -9,7 +10,8 @@ def main():
         context =  browser.new_context()
         
         StatusOficial, Noticias = getInfo(context)
-        googleIA(StatusOficial, Noticias)
+        message = googleIA(StatusOficial, Noticias)
+        runWhatsapp(message)
 
         browser.close()
         context.close()

@@ -12,7 +12,7 @@ def googleIA(StatusOficial, Noticias):
         model="gemini-2.5-flash",
         config=types.GenerateContentConfig(
             system_instruction=""" 
-            Você é uma inteligência artificial especialista em transporte urbano, com foco no Metrô de São Paulo. 
+            Você é especialista em transporte urbano, com foco no Metrô de São Paulo. 
             Seu papel é ler e interpretar dados recentes sobre o funcionamento das linhas do metrô, incluindo:
             - Notícias de portais de jornalismo,
             - Comunicados e dados oficiais do Metrô de São Paulo.
@@ -37,5 +37,6 @@ def googleIA(StatusOficial, Noticias):
         Noticias Recentes:: {Noticias}
         """
     )
-
-    print(response.text)
+    message = response.text
+    print(message)
+    return message
