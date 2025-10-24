@@ -6,12 +6,16 @@ RUN apt-get update && \
     apt-get install -y nodejs && \
     apt-get clean
 
+RUN useradd -m appuser
+
 WORKDIR /baseapp
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 COPY . .
+
+RUN chown -R appuser:appuser /baseapp
 
 RUN python -m playwright install
 
@@ -20,4 +24,7 @@ RUN npm install
 
 WORKDIR /baseapp
 
+USER appuser
+
+# Comando padrão
 CMD ["python", "-m", "app.main"]
