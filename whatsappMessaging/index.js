@@ -1,24 +1,22 @@
-// index.js
-require('dotenv').config();
 const { Client, RemoteAuth } = require('whatsapp-web.js');
 const mongoose = require('mongoose');
 const { MongoStore } = require('wwebjs-mongo');
 const qrcode = require('qrcode-terminal');
+require('dotenv').config();
 
 (async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log('Conectado ao MongoDB');
-
+    console.log('✅ Conectado ao MongoDB via Mongoose!');
+    // 2️⃣ Cria o store oficial do wwebjs-mongo
     const store = new MongoStore({ mongoose });
 
     const client = new Client({
       authStrategy: new RemoteAuth({
         store,
-        clientId: 'bot-metrosp',        
-        backupSyncIntervalMs: 60_000    
+        clientId: 'bot-metrosp',
+        backupSyncIntervalMs: 60_000
       }),
-      puppeteer: { headless: true }
     });
 
     client.on('qr', qr => {
@@ -27,7 +25,7 @@ const qrcode = require('qrcode-terminal');
     });
 
     client.on('authenticated', () => {
-      console.log('Sessão autenticada!');
+      console.log('Sessão autenticada');
     });
 
     client.on('ready', async () => {
@@ -38,27 +36,32 @@ const qrcode = require('qrcode-terminal');
 
       if (!grupo) {
         console.log("Grupo não encontrado");
-        return;
-      }
-
-      const mensagem = process.argv[2];
-      await client.sendMessage(grupo.id._serialized, mensagem);
-      console.log("✅ Mensagem enviada!");
-    });
-
-    client.on('disconnected', reason => {
-      console.log('Cliente desconectado:', reason);
-    });
-
-    client.on('message_ack', (msg, ack) => {
-      if (ack === 1) {
         client.destroy();
         process.exit(0);
       }
+
+      const mensagem = process.argv[2];
+
+      const sentMsg = await client.sendMessage(grupo.id._serialized, mensagem);
+      console.log("Mensagem enviada");
+
+      client.on('message_ack', (msg, ack) => {
+        if (msg.id._serialized === sentMsg.id._serialized && ack >= 1) {
+          client.destroy();
+          process.exit(0);
+        }
+      });
+    });
+
+    client.on('disconnected', reason => {
+      console.log('⚠️ Cliente desconectado:', reason);
+      process.exit(0);
     });
 
     await client.initialize();
+
   } catch (err) {
-    console.error('Erro ao iniciar:', err);
+    console.error('❌ Erro ao iniciar o bot:', err);
+    process.exit(1);
   }
 })();

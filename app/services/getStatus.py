@@ -2,11 +2,11 @@
 def getInfo(context):
     def getOfficialLineStatus(context):
         page = context.new_page()
-        page.goto("https://www.metro.sp.gov.br/pt_BR/sua-viagem/direto-metro")
+        page.goto("https://www.metro.sp.gov.br/wp-content/themes/metrosp/direto-metro.php")
         page.wait_for_load_state("networkidle")
 
         frames = page.frames
-        frame = frames[1]
+        frame = frames[0]
 
         table = frame.locator(".list-group-flush")
         linhas = table.locator("li")
