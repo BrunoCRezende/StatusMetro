@@ -8,6 +8,9 @@ data/**/*.png
 
 __pycache__
 
-whatsappMessaging/node_modules
 .wwebjs_auth
 .wwebjs_cache
+
+whatsappMessaging/node_modules
+whatsappMessaging/.wwebjs_auth
+whatsappMessaging/.wwebjs_cache
