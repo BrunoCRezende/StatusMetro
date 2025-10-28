@@ -8,10 +8,15 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGO_URI).then(() => {
     const store = new MongoStore({ mongoose: mongoose });
     const client = new Client({
+           puppeteer: {
+        args: ['--no-sandbox'],
+    },
+
         authStrategy: new RemoteAuth({
             store: store,
             backupSyncIntervalMs: 300000
         })
+
     });
 
 
