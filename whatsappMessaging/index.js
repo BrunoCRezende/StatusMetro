@@ -8,15 +8,10 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGO_URI).then(() => {
     const store = new MongoStore({ mongoose: mongoose });
     const client = new Client({
-    puppeteer: {
-        headless: false,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    },
         authStrategy: new RemoteAuth({
             store: store,
             backupSyncIntervalMs: 300000
         })
-        
     });
 
 
@@ -35,21 +30,16 @@ client.on('ready', async () => {
   for (i = 0; i < numeros.length; i++) {
     const contato = numeros[i].trim() + '@c.us';
       await client.sendMessage(contato, mensagem)
-      .then(() => console.log(`✉️ Mensagem enviada para ${contato}`))
+      .then(() => console.log(`Mensagem enviada para ${contato}`))
       .catch(err => console.error('Erro ao enviar mensagem:', err));
 
-      if (i === numeros.length) {
+      if (i === numeros.length - 1) {
         await new Promise(res => setTimeout(res, 3000)); // espera 3 segundos
         client.destroy();
+        process.exit(0);
+
       }
   }
-});
-
-client.on('message_ack', (msg, ack) => {
-    if (ack === 1) {
-        client.destroy();
-        process.exit(0);
-    }
 });
 
     client.initialize();
