@@ -9,8 +9,11 @@ def main():
         browser =  p.chromium.launch(headless=True)
         context =  browser.new_context()
         
+        modelo = "gemini-2.5-flash"
+
+
         StatusOficial, Noticias = getInfo(context)
-        message = googleIA(StatusOficial, Noticias)
+        message = googleIA(modelo, StatusOficial, Noticias)
         runWhatsapp(message)
 
         browser.close()
