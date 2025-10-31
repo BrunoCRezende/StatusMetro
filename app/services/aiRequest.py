@@ -29,7 +29,8 @@ def googleIA(modelo, StatusOficial, Noticias):
                 “Não há relatos recentes de falhas ou ocorrências no Metrô de São Paulo.”
 
                 Formato esperado:
-                - Comece citando as ocorrências específicas (“Na Linha 3-Vermelha, ocorreu uma falha técnica…”).
+                - Comece citando o status atual das linhas (“Todas as Linhas operam normalmente”).
+                - Mencione as ocorrências específicas (“Na Linha 3-Vermelha, ocorreu uma falha técnica…”).
                 - Termine com uma observação de status (“A operação já foi normalizada, segundo o Metrô.”).
                 """
             ),
@@ -46,6 +47,7 @@ def googleIA(modelo, StatusOficial, Noticias):
 
     except Exception as e:
         if modelo != "gemini-2.0-flash":
+            print('Erro com Gemini API, tentando modelo alternativo:', e)
             return googleIA("gemini-2.0-flash", StatusOficial, Noticias)
         else:
             print("Error generating content with Gemini API:", e)

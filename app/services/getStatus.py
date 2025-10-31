@@ -18,6 +18,7 @@ def getInfo(context):
 
             return linhasMetro
         except:
+            print('Erro ao obter status oficial das linhas')
             return ["Não foi possível obter o status das linhas no momento.\n"]
 
     def getRecentNews(context):
@@ -35,6 +36,7 @@ def getInfo(context):
 
             return noticias
         except:
+            print('Erro ao obter noticias recentes')
             return ["Não foi possível obter as notícias recentes no momento.\n"]
 
     StatusOficial = getOfficialLineStatus(context)
