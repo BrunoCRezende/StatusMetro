@@ -10,13 +10,11 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
   const client = new Client({
      puppeteer: {
     headless: true,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--single-process',
-      '--no-zygote'
-    ],
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-features=IsolateOrigins,site-per-process'
+        ]
   },
 
     authStrategy: new RemoteAuth({
