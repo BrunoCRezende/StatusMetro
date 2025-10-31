@@ -1,57 +1,34 @@
-const { Client, RemoteAuth } = require("whatsapp-web.js");
-const qrcode = require("qrcode-terminal");
+const { Client, GatewayIntentBits } = require('discord.js');
+require('dotenv').config();
 
-const { MongoStore } = require("wwebjs-mongo");
-const mongoose = require("mongoose");
+const client = new Client({
+    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
+});
 
-// Load the session data
-mongoose.connect(process.env.MONGO_URI).then(() => {
-  const store = new MongoStore({ mongoose: mongoose });
-  const client = new Client({
-     puppeteer: {
-    headless: true,
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-features=IsolateOrigins,site-per-process'
-        ]
-  },
+client.once('ready', async () => {
+    console.log(`Logado como ${client.user.tag}!`);
 
-    authStrategy: new RemoteAuth({
-      store: store,
-      backupSyncIntervalMs: 300000,
-    }),
-  });
-
-
-  client.on("qr", (qr) => {
-    qrcode.generate(qr, { small: true });
-  });
-
-  client.on("ready", async () => {
-    await new Promise((res) => setTimeout(res, 3000)); 
-
-    let numeros = process.env.PHONE_NUMBER;
-    numeros = numeros.split(",");
-
+    const channelName = "geral";
     const mensagem = process.argv[2];
 
-    for (i = 0; i < numeros.length; i++) {
-      const contato = numeros[i].trim() + "@c.us";
-      await client
-        .sendMessage(contato, mensagem)
-        .then(() => console.log(`Mensagem enviada para ${contato}`))
-        .catch((err) => console.error("Erro ao enviar mensagem:", err));
-      await new Promise((res) => setTimeout(res, 1000));
-    }
-  });
+    let channelFound = null;
+    client.guilds.cache.forEach(guild => {
+        if (channelFound) return; 
+        const channel = guild.channels.cache.find(c => c.name === channelName && c.isTextBased());
+        if (channel) channelFound = channel;
+    });
 
+    if (!channelFound) return console.error(`canal não encontrado`);
+
+    channelFound.send(mensagem)
+        .then(() => console.log(`Mensagem enviada`))
+        .catch(console.error);
+});
 
   setTimeout(() => {
     console.warn("Timeout");
     client.destroy();
     process.exit(0);
-  }, 60000);
+  }, 15000);
 
-  client.initialize();
-});
+client.login(process.env.DISCORD_BOT_TOKEN);

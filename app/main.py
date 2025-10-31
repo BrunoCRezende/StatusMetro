@@ -11,7 +11,6 @@ def main():
         
         modelo = "gemini-2.5-flash"
 
-
         StatusOficial, Noticias = getInfo(context)
         message = googleIA(modelo, StatusOficial, Noticias)
         runWhatsapp(message)
