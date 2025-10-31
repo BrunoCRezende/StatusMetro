@@ -8,10 +8,16 @@ const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGO_URI).then(() => {
   const store = new MongoStore({ mongoose: mongoose });
   const client = new Client({
-    puppeteer: {
-      headless:true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    },
+     puppeteer: {
+    headless: true,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--single-process',
+      '--no-zygote'
+    ],
+  },
 
     authStrategy: new RemoteAuth({
       store: store,
@@ -25,7 +31,7 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
   });
 
   client.on("ready", async () => {
-    await new Promise((res) => setTimeout(res, 3000)); // espera 3 segundos
+    await new Promise((res) => setTimeout(res, 3000)); 
 
     let numeros = process.env.PHONE_NUMBER;
     numeros = numeros.split(",");
